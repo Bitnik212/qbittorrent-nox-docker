@@ -1,15 +1,16 @@
 # QBittorrent Docker Image
 
-[Docker](https://www.docker.com/) image for [QBittorrent](http://www.qbittorrent.org/).
+[Docker](https://www.docker.com/) image for [qBittorrent](http://www.qbittorrent.org/).
 
 Run using this command
 
 	docker run -itd \
-		-p 8080:8080 \
+		-p 8081:8081 \
+		-e QBT_WEB_PORT=8081
 		-v /data/qbittorrent/config:/root/.config/qBittorrent \
 		-v /data/qbittorrent/torrents:/root/.local/share/data/qBittorrent \
 		-v /data/qbittorrent/downloads:/root/Downloads \
-		sohrab/qbittorrent
+		bitnik212/qbittorrent-nox
 
 To have webUI running on [http://localhost:8080](http://localhost:8080) (username: admin, password: adminadmin) with config in the following locations mounted:
 

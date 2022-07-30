@@ -4,19 +4,20 @@
 
 Run using this command
 
-	docker run -itd \
+	docker run -d \
 		-p 8081:8081 \
 		-e QBT_WEB_PORT=8081
-		-v /data/qbittorrent/config:/root/.config/qBittorrent \
-		-v /data/qbittorrent/torrents:/root/.local/share/data/qBittorrent \
-		-v /data/qbittorrent/downloads:/root/Downloads \
+		-e TORRENT_PORT=8082
+		-v $PWD/config:/config \
+		-v $PWD/torrents:/torrents \
+		-v $PWD/downloads:/downloads \
 		bitnik212/qbittorrent-nox
 
 To have webUI running on [http://localhost:8080](http://localhost:8080) (username: admin, password: adminadmin) with config in the following locations mounted:
 
-* `/data/qbittorrent/config`: QBittorrent configuration files
-* `/data/qbittorrent/torrents`: Torrent files
-* `/data/qbittorrent/downloads`: Download location
+* `/config`: QBittorrent configuration files
+* `/torrents`: Torrent files
+* `/downloads`: Download location
 
 It is probably a good idea to add `--restart=always` so the container restarts if it goes down.
 

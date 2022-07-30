@@ -5,4 +5,4 @@ if [ ! -f /root/.config/qBittorrent/qBittorrent.conf ] ; then
 fi
 
 echo "Starting qbittorrent..."
-exec qbittorrent-nox
+exec qbittorrent-nox  --webui-port=$QBT_WEB_PORT

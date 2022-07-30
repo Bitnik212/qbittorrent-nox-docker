@@ -1,4 +1,4 @@
-FROM debian:wheezy
+FROM debian:stable-slim
 MAINTAINER sohrab <sohrab.hosseini@gmail.com>
 
 RUN apt-get update && \
@@ -12,7 +12,7 @@ VOLUME /root/.config/qBittorrent
 VOLUME /root/.local/share/data/qBittorrent
 VOLUME /root/Downloads
 
-EXPOSE 8080
+EXPOSE $QBT_WEB_PORT
 
 COPY start.sh /
 RUN chmod +x /start.sh

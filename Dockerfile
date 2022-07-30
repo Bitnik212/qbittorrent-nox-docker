@@ -1,5 +1,4 @@
 FROM debian:stable-slim
-MAINTAINER sohrab <sohrab.hosseini@gmail.com>
 
 RUN apt-get update && \
     apt-get install -y qbittorrent-nox && \

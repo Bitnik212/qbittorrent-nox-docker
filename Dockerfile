@@ -1,4 +1,16 @@
-FROM alpine:3.16
+FROM node:16.19.0 as build-vue-theme
+
+WORKDIR /tmp
+
+RUN git clone https://github.com/WDaan/VueTorrent.git
+
+WORKDIR /tmp/VueTorrent
+
+RUN npm install
+
+RUN npm run build
+
+FROM alpine:3.16 as build-qbt
 
 # Install required packages
 RUN apk add --no-cache \
@@ -85,7 +97,6 @@ RUN set -x \
  && apk del --purge .build-deps \
  && rm -rf /tmp/*
 
-
 RUN set -x \
     # Add non-root user
  && adduser -S -D -u 520 -g 520 -s /sbin/nologin qbittorrent \
@@ -100,7 +111,12 @@ RUN set -x \
  && su qbittorrent -s /bin/sh -c 'qbittorrent-nox -v'
 
 COPY qBittorrent.conf /config/qBittorrent.conf
+
+ENV EMAIL_ENABLE="false" EMAIL_TO="" EMAIL_FROM="" EMAIL_SMTP="" EMAIL_PASSWORD="" EMAIL_LOGIN="" EMAIL_NEED_SSL="true" EMAIL_NEED_AUTH="true"
+
 COPY entrypoint.sh /
+
+COPY --from=build-vue-theme /tmp/VueTorrent/vuetorrent /home/qbittorrent/theme
 
 RUN chmod +x entrypoint.sh
 
@@ -110,7 +126,7 @@ ENV HOME=/home/qbittorrent
 
 USER qbittorrent
 
-EXPOSE $QBT_WEB_PORT 20888
+EXPOSE $QBT_WEB_PORT 8081
 
 ENTRYPOINT ["/entrypoint.sh"]
 CMD qbittorrent-nox --webui-port=$QBT_WEB_PORT
